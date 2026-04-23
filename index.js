@@ -90,15 +90,3 @@ console.log(false && (false || true)); // Result: false
 // 0 == false → true → 1
 // 1 < 1 → false
 console.log((+null == false) < 1 ** 5); // Result: false
-
-function pow(x, y) {
-  let result = 1;
-
-  for (let i = 0; i < y; i++) {
-    result *= x;
-  }
-
-  return result;
-}
-
-console.log(pow(2, 3));

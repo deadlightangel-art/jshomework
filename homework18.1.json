@@ -1,0 +1,1173 @@
+{
+  "info": {
+    "_postman_id": "96572aff-fca3-4a8f-88b1-654772b017c0",
+    "name": "homework API testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51542133",
+    "_collection_link": "https://go.postman.co/collection/51542133-96572aff-fca3-4a8f-88b1-654772b017c0?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Negative tests 13.1",
+      "item": [
+        {
+          "name": "Create user without email",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Create user with invalid email",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Create user with short password",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Create user with different passwords",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 400\", function () {\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status is error\", function () {\r",
+                  "    pm.expect(response.status).to.eql(\"error\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct error message\", function () {\r",
+                  "    pm.expect(response.message).to.eql(\"Passwords do not match\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Maksym\",\r\n  \"lastName\": \"Hera\",\r\n  \"email\": \"maksym123456@gmail.com\",\r\n  \"password\": \"Password12A\",\r\n  \"repeatPassword\": \"Different12A\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login with wrong password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"WrongPassword123!\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/signin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "signin"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create user with empty lastName",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Update profile empty lastName",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 400\", function () {\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status is error\", function () {\r",
+                  "    pm.expect(response.status).to.eql(\"error\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Correct error message\", function () {\r",
+                  "    pm.expect(response.message).to.eql('\"lastName\" is not allowed to be empty');\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": 12345,\r\n  \"lastName\": \"Test\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Homework 15.1",
+      "item": [
+        {
+          "name": "Create user validation",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const data = JSON.parse(pm.collectionVariables.get(\"createData\"));\r",
+                  "const index = Number(pm.info.iteration);\r",
+                  "\r",
+                  "pm.variables.set(\"name\", data[index].name);\r",
+                  "pm.variables.set(\"lastName\", data[index].lastName);\r",
+                  "pm.variables.set(\"email\", data[index].email);\r",
+                  "pm.variables.set(\"password\", data[index].password);\r",
+                  "pm.variables.set(\"repeatPassword\", data[index].repeatPassword);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response status is ok\", function () {\r",
+                  "    pm.expect(pm.response.json().status).to.eql(\"ok\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"{{name}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"repeatPassword\": \"{{repeatPassword}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update profile validation",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const data = JSON.parse(pm.collectionVariables.get(\"updateData\"));\r",
+                  "const index = Number(pm.info.iteration);\r",
+                  "\r",
+                  "pm.variables.set(\"name\", data[index].name);\r",
+                  "pm.variables.set(\"lastName\", data[index].lastName);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"lastName\": \"{{lastName}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Homework 16.1",
+      "item": [
+        {
+          "name": "Get all cities",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const cities = pm.response.json().data.getAllCities;\r",
+                  "\r",
+                  "// Save all cities\r",
+                  "pm.collectionVariables.set(\r",
+                  "\"cities\",\r",
+                  "JSON.stringify(cities)\r",
+                  ");\r",
+                  "\r",
+                  "// Select 4 random cities\r",
+                  "const randomCities = [...cities]\r",
+                  ".sort(() => 0.5 - Math.random())\r",
+                  ".slice(0, 4);\r",
+                  "\r",
+                  "// Save IDs\r",
+                  "pm.collectionVariables.set(\r",
+                  "\"randomIds\",\r",
+                  "JSON.stringify(\r",
+                  "randomCities.map(city => city.id)\r",
+                  ")\r",
+                  ");\r",
+                  "\r",
+                  "// Average square of ALL cities\r",
+                  "const avgSquare =\r",
+                  "cities.reduce(\r",
+                  "(sum, city) => sum + city.square,\r",
+                  "0\r",
+                  ") / cities.length;\r",
+                  "\r",
+                  "pm.collectionVariables.set(\r",
+                  "\"avgSquare\",\r",
+                  "avgSquare\r",
+                  ");\r",
+                  "\r",
+                  "// Find min and max IDs\r",
+                  "const randomIds = JSON.parse(\r",
+                  "pm.collectionVariables.get(\"randomIds\")\r",
+                  ");\r",
+                  "\r",
+                  "const ids = randomIds.map(Number);\r",
+                  "\r",
+                  "pm.collectionVariables.set(\r",
+                  "\"minId\",\r",
+                  "Math.min(...ids)\r",
+                  ");\r",
+                  "\r",
+                  "pm.collectionVariables.set(\r",
+                  "\"maxId\",\r",
+                  "Math.max(...ids)\r",
+                  ");\r",
+                  "\r",
+                  "console.log(\"Random IDs:\", randomIds);\r",
+                  "console.log(\"Average square:\", avgSquare);\r",
+                  "console.log(\"Min ID:\", Math.min(...ids));\r",
+                  "console.log(\"Max ID:\", Math.max(...ids));\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"query\": \"query { getAllCities { id name square } }\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://graphql-ukrainian-cities.hillel.it/graphql",
+              "protocol": "https",
+              "host": [
+                "graphql-ukrainian-cities",
+                "hillel",
+                "it"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get descriptions",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get(\"randomIds\"));\r",
+                  "const index = Number(pm.collectionVariables.get(\"descriptionIndex\") || 0);\r",
+                  "\r",
+                  "pm.collectionVariables.set(\"cityId\", ids[index]);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Description exists\", function () {\r",
+                  "    const response = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(response.data.getCityDescription).to.exist;\r",
+                  "    pm.expect(response.data.getCityDescription).to.be.a(\"string\");\r",
+                  "});\r",
+                  "\r",
+                  "const ids = JSON.parse(\r",
+                  "    pm.collectionVariables.get(\"randomIds\")\r",
+                  ");\r",
+                  "\r",
+                  "let currentIndex = parseInt(\r",
+                  "    pm.collectionVariables.get(\"descriptionIndex\") || \"0\"\r",
+                  ");\r",
+                  "\r",
+                  "pm.collectionVariables.set(\r",
+                  "    \"currentId\",\r",
+                  "    ids[currentIndex]\r",
+                  ");\r",
+                  "\r",
+                  "console.log(\r",
+                  "    \"Description for ID:\",\r",
+                  "    ids[currentIndex]\r",
+                  ");\r",
+                  "\r",
+                  "currentIndex++;\r",
+                  "\r",
+                  "pm.collectionVariables.set(\r",
+                  "    \"descriptionIndex\",\r",
+                  "    currentIndex\r",
+                  ");"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"query\": \"query ($id: ID!) { getCityDescription(id: $id) }\",\r\n  \"variables\": {\r\n    \"id\": \"{{currentId}}\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://graphql-ukrainian-cities.hillel.it/graphql",
+              "protocol": "https",
+              "host": [
+                "graphql-ukrainian-cities",
+                "hillel",
+                "it"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get city by range",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const citiesInRange =\r",
+                  "    pm.response.json().data.getCityByRangeId;\r",
+                  "\r",
+                  "pm.test(\"Cities were returned\", function () {\r",
+                  "    pm.expect(citiesInRange.length).to.be.above(0);\r",
+                  "});\r",
+                  "\r",
+                  "pm.collectionVariables.set(\r",
+                  "    \"citiesInRange\",\r",
+                  "    JSON.stringify(citiesInRange)\r",
+                  ");\r",
+                  "\r",
+                  "console.log(citiesInRange);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"query\": \"query { getCityByRangeId(filter:{minId:{{minId}},maxId:{{maxId}}}) { id name square } }\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://graphql-ukrainian-cities.hillel.it/graphql",
+              "protocol": "https",
+              "host": [
+                "graphql-ukrainian-cities",
+                "hillel",
+                "it"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get query names",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Inspect Query arguments",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Inspect CityAbstract",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Inspect getCityDescription arguments",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"query\": \"{ __type(name:\\\"Query\\\") { fields { name args { name type { kind name ofType { kind name } } } } } }\"\r\n}"
+            },
+            "url": {
+              "raw": "https://graphql-ukrainian-cities.hillel.it/graphql",
+              "protocol": "https",
+              "host": [
+                "graphql-ukrainian-cities",
+                "hillel",
+                "it"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Homework 18.1 SOAP",
+      "item": [
+        {
+          "name": "Is Valid ISBN13 Number",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Is Valid ISBN10 Number",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Create user",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const randomEmail =\"test_\" + Date.now() + \"@test.com\";\r",
+              "pm.collectionVariables.set(\"email\", randomEmail);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "\r",
+              "pm.environment.set(\"userId\", response.data.userId);\r",
+              "pm.environment.set(\"token\", response.data.token);\r",
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Status is ok\", function () {\r",
+              "    pm.expect(response.status).to.eql(\"ok\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"User id exists\", function () {\r",
+              "    pm.expect(response.data.userId).to.exist;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Token exists\", function () {\r",
+              "    pm.expect(response.data.token).to.exist;\r",
+              "});\r",
+              "const schema = {\r",
+              "    type: \"object\",\r",
+              "    required: [\"status\", \"data\"],\r",
+              "    properties: {\r",
+              "        status: {\r",
+              "            type: \"string\"\r",
+              "        },\r",
+              "        data: {\r",
+              "            type: \"object\",\r",
+              "            required: [\"userId\"],\r",
+              "            properties: {\r",
+              "                userId: {\r",
+              "                    type: \"number\"\r",
+              "                }\r",
+              "            }\r",
+              "        }\r",
+              "    }\r",
+              "};\r",
+              "\r",
+              "pm.test(\"Schema is valid\", function () {\r",
+              "    pm.response.to.have.jsonSchema(schema);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Maksym\",\r\n  \"lastName\": \"Hera\",\r\n  \"email\": \"maksym987654321999@gmail.com\",\r\n  \"password\": \"Password12A\",\r\n  \"repeatPassword\": \"Password12A\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/signup",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "signup"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update profile",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "const requestBody = JSON.parse(pm.request.body.raw);\r",
+              "\r",
+              "// твои старые тесты\r",
+              "\r",
+              "pm.test(\"Name matches request\", function () {\r",
+              "    pm.expect(response.data.name).to.eql(requestBody.name);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Last name matches request\", function () {\r",
+              "    pm.expect(response.data.lastName).to.eql(requestBody.lastName);\r",
+              "});\r",
+              "const schema = {\r",
+              "    type: \"object\",\r",
+              "    required: [\"status\", \"data\"],\r",
+              "    properties: {\r",
+              "        status: {\r",
+              "            type: \"string\"\r",
+              "        },\r",
+              "        data: {\r",
+              "            type: \"object\",\r",
+              "            required: [\"userId\", \"name\", \"lastName\"],\r",
+              "            properties: {\r",
+              "                userId: {\r",
+              "                    type: \"number\"\r",
+              "                },\r",
+              "                name: {\r",
+              "                    type: \"string\"\r",
+              "                },\r",
+              "                lastName: {\r",
+              "                    type: \"string\"\r",
+              "                }\r",
+              "            }\r",
+              "        }\r",
+              "    }\r",
+              "};\r",
+              "\r",
+              "pm.test(\"Schema is valid\", function () {\r",
+              "    pm.response.to.have.jsonSchema(schema);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"photo\": \"https://i.pravatar.cc/300\",\r\n    \"name\": \"Maksym Updated\",\r\n    \"lastName\": \"Hera Updated\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/users/profile",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "profile"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Change password",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Status is ok\", function () {\r",
+              "    pm.expect(response.status).to.eql(\"ok\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"User id matches created user\", function () {\r",
+              "    pm.expect(response.data.userId)\r",
+              "        .to.eql(Number(pm.environment.get(\"userId\")));\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"oldPassword\": \"{{password}}\",\r\n    \"password\": \"Password12New\",\r\n    \"repeatPassword\": \"Password12New\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/users/password",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "password"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Status is ok\", function () {\r",
+              "    pm.expect(response.status).to.eql(\"ok\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"User id matches created user\", function () {\r",
+              "    pm.expect(response.data.userId)\r",
+              "        .to.eql(Number(pm.environment.get(\"userId\")));\r",
+              "});\r",
+              "\r",
+              "pm.environment.set(\"password\", \"Password12New\");\r",
+              "pm.test(\"Photo filename exists\", function () {\r",
+              "    pm.expect(response.data.photoFilename).to.exist;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Distance units is km\", function () {\r",
+              "    pm.expect(response.data.distanceUnits).to.eql(\"km\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Currency is usd\", function () {\r",
+              "    pm.expect(response.data.currency).to.eql(\"usd\");\r",
+              "});\r",
+              "pm.test(\"Distance units exist\", function () {\r",
+              "    pm.expect(response.data.distanceUnits).to.exist;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/signin",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "signin"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add a car",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"carBrandId\": 1,\r\n  \"carModelId\": 1,\r\n  \"mileage\": 122\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Logout",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Status is ok\", function () {\r",
+              "    pm.expect(response.status).to.eql(\"ok\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/logout",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "logout"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Status is ok\", function () {\r",
+              "    pm.expect(response.status).to.eql(\"ok\");\r",
+              "});\r",
+              "pm.test(\"Response contains status field\", function () {\r",
+              "    pm.expect(response).to.have.property(\"status\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/users",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "email",
+      "value": ""
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "carId",
+      "value": ""
+    },
+    {
+      "key": "createIndex",
+      "value": ""
+    },
+    {
+      "key": "updateIndex ",
+      "value": ""
+    },
+    {
+      "key": "createData",
+      "value": ""
+    },
+    {
+      "key": "updateData",
+      "value": ""
+    },
+    {
+      "key": "updateIndex",
+      "value": ""
+    },
+    {
+      "key": "descriptionIndex",
+      "value": ""
+    },
+    {
+      "key": "cities",
+      "value": ""
+    },
+    {
+      "key": "randomIds",
+      "value": ""
+    },
+    {
+      "key": "avgSquare",
+      "value": ""
+    },
+    {
+      "key": "cityId",
+      "value": ""
+    },
+    {
+      "key": "minId",
+      "value": ""
+    },
+    {
+      "key": "maxId",
+      "value": ""
+    },
+    {
+      "key": "citiesInRange",
+      "value": ""
+    },
+    {
+      "key": "currentId",
+      "value": ""
+    }
+  ]
+}

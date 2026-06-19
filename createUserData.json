@@ -1,0 +1,22 @@
+[
+  {
+    "email": "",
+    "password": "Password12New",
+    "repeatPassword": "Password12New"
+  },
+  {
+    "email": "wrongEmail",
+    "password": "Password12New",
+    "repeatPassword": "Password12New"
+  },
+  {
+    "email": "maksym555888@gmail.com",
+    "password": "Pass1",
+    "repeatPassword": "Pass1"
+  },
+  {
+    "email": "maksym555888@gmail.com",
+    "password": "Password12New",
+    "repeatPassword": "AnotherPassword12"
+  }
+]

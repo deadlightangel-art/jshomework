@@ -1,0 +1,25 @@
+[{
+  "_id": "m1",
+  "carBrandId": "b1",
+  "title": "Corolla"
+},
+{
+  "_id": "m2",
+  "carBrandId": "b2",
+  "title": "X5"
+},
+{
+  "_id": "m3",
+  "carBrandId": "b3",
+  "title": "A6"
+},
+{
+  "_id": "m4",
+  "carBrandId": "b4",
+  "title": "Civic"
+},
+{
+  "_id": "m5",
+  "carBrandId": "b5",
+  "title": "Focus"
+}]

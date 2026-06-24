@@ -1,0 +1,30 @@
+[{
+  "_id": "c1",
+  "userId": "u1",
+  "carBrandId": "b1",
+  "carModelId": "m1"
+},
+{
+  "_id": "c2",
+  "userId": "u2",
+  "carBrandId": "b2",
+  "carModelId": "m2"
+},
+{
+  "_id": "c3",
+  "userId": "u3",
+  "carBrandId": "b3",
+  "carModelId": "m3"
+},
+{
+  "_id": "c4",
+  "userId": "u4",
+  "carBrandId": "b4",
+  "carModelId": "m4"
+},
+{
+  "_id": "c5",
+  "userId": "u5",
+  "carBrandId": "b5",
+  "carModelId": "m5"
+}]

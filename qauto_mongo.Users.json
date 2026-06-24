@@ -1,0 +1,30 @@
+[{
+  "_id": "u1",
+  "email": "max@example.com",
+  "password": "123456",
+  "role": "user"
+},
+{
+  "_id": "u2",
+  "email": "anna@example.com",
+  "password": "123456",
+  "role": "user"
+},
+{
+  "_id": "u3",
+  "email": "john@example.com",
+  "password": "123456",
+  "role": "admin"
+},
+{
+  "_id": "u4",
+  "email": "kate@example.com",
+  "password": "123456",
+  "role": "user"
+},
+{
+  "_id": "u5",
+  "email": "alex@example.com",
+  "password": "123456",
+  "role": "user"
+}]

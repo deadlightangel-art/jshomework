@@ -1,0 +1,35 @@
+[{
+  "_id": "p1",
+  "userId": "u1",
+  "name": "Maksym",
+  "lastName": "Hera",
+  "country": "Poland"
+},
+{
+  "_id": "p2",
+  "userId": "u2",
+  "name": "Anna",
+  "lastName": "Nowak",
+  "country": "Poland"
+},
+{
+  "_id": "p3",
+  "userId": "u3",
+  "name": "John",
+  "lastName": "Smith",
+  "country": "USA"
+},
+{
+  "_id": "p4",
+  "userId": "u4",
+  "name": "Kate",
+  "lastName": "Brown",
+  "country": "UK"
+},
+{
+  "_id": "p5",
+  "userId": "u5",
+  "name": "Alex",
+  "lastName": "Wilson",
+  "country": "Canada"
+}]
